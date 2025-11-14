@@ -35,6 +35,12 @@
     li:hover {
       background: #dcdcdc;
     }
+    .credits {
+      font-size: 12px;
+      color: #777;
+      text-align: center;
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -42,10 +48,13 @@
     <h2>My Music Player</h2>
     <p>Click a song to play it:</p>
     <ul id="playlist">
-  <li data-src="troye_dreamy_30s.mp3">Dreamy Troye Vibes</li>
-</ul>
-
+      <li data-src="love.mp3">Love – Bensound</li>
+    </ul>
     <audio id="audioPlayer" controls></audio>
+
+    <div class="credits">
+      Music: "Love" by <a href="https://www.bensound.com" target="_blank">Bensound.com</a>
+    </div>
   </div>
 
   <script>
