@@ -1,2 +1,2 @@
 # Music-Player
-Music for jogging or simply for fun.
+Music for background noise.
