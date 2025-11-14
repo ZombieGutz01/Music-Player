@@ -6,22 +6,34 @@
   <style>
     body {
       font-family: sans-serif;
-      background: #d6f0ff; /* soft ice blue */
+      background: #d6f0ff;
       padding: 20px;
       color: black;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 40px;
     }
+
+    /* MAIN PLAYER BOX (center) */
     .player {
       background: white;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
-      max-width: 400px;
-      margin: auto;
+      width: 400px;
     }
-    audio {
-      width: 100%;
-      margin-top: 10px;
+
+    /* LEFT VIOLIN BOX */
+    #violinBox {
+      width: 200px;
+      min-height: 250px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     }
+
     ul {
       list-style: none;
       padding: 0;
@@ -31,14 +43,33 @@
       cursor: pointer;
       padding: 6px;
       border-radius: 8px;
-      background: #cce8ff; /* soft baby blue */
-      color: #000;
+      background: #cce8ff;
+      color: black;
       transition: 0.2s;
     }
     li:hover {
       background: #b8dbff;
       box-shadow: 0 0 10px rgba(140, 190, 255, 0.8);
     }
+
+    audio {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+
+    /* NIGHT MODE AUDIO CONTROL FIXES */
+    .night audio::-webkit-media-controls-panel {
+      background-color: #2b2b2b !important;
+    }
+    .night audio::-webkit-media-controls-play-button {
+      background-color: #444 !important;
+      border-radius: 50%;
+    }
+    .night audio::-webkit-media-controls-timeline {
+      background-color: #444 !important;
+    }
+
     .credits {
       font-size: 12px;
       color: #777;
@@ -48,6 +79,14 @@
   </style>
 </head>
 <body>
+
+  <!-- LEFT SIDE VIOLIN BOX -->
+  <div id="violinBox">
+    <h3>My Violin Covers</h3>
+    <ul id="violinList"></ul>
+  </div>
+
+  <!-- MAIN PLAYER -->
   <div class="player">
     <h2>Music dump</h2>
     <p>Click a song to play it:</p>
@@ -56,11 +95,6 @@
       <li data-src="love.mp3">Love – Bensound</li>
       <li data-src="dreams.mp3">Dreams – Bensound</li>
     </ul>
-
-    <div class="player" id="violinBox" style="margin-top:20px;">
-      <h3>My Violin Covers</h3>
-      <ul id="violinList"></ul>
-    </div>
 
     <p id="nowPlaying" style="font-size:14px; color:#555; margin-top:10px; display:none;"></p>
     <audio id="audioPlayer" controls></audio>
@@ -73,7 +107,7 @@
 
     <div class="credits">
       Music: <a href="https://www.bensound.com" target="_blank">Bensound.com</a>
-       - ALL violin covers are made by me. I do NOT own the original songs.
+      - ALL violin covers are mine.
     </div>
   </div>
 
@@ -96,36 +130,28 @@
 
     modeToggle.addEventListener('click', () => {
       night = !night;
+      document.body.classList.toggle('night', night);
 
       if (night) {
-        /* NIGHT MODE */
         document.body.style.background = '#1a1a1a';
-        document.body.style.color = 'black';
 
-        document.querySelectorAll('.player').forEach(box => {
+        document.querySelectorAll('.player, #violinBox').forEach(box => {
           box.style.background = '#2b2b2b';
           box.style.color = 'black';
         });
 
         document.querySelectorAll('li').forEach(b => {
-          b.style.background = '#0d1b3a'; /* dark blue */
+          b.style.background = '#0d1b3a';
           b.style.color = 'black';
         });
-
-        /* Audio control background */
-        const audioPlayer = document.getElementById('audioPlayer');
-        audioPlayer.style.background = '#2b2b2b';
-        audioPlayer.style.color = 'black';
 
         modeToggle.innerText = 'Switch to Day Mode';
         modeToggle.style.background = '#555';
 
       } else {
-        /* DAY MODE */
         document.body.style.background = '#d6f0ff';
-        document.body.style.color = 'black';
 
-        document.querySelectorAll('.player').forEach(box => {
+        document.querySelectorAll('.player, #violinBox').forEach(box => {
           box.style.background = 'white';
           box.style.color = 'black';
         });
@@ -135,14 +161,11 @@
           b.style.color = 'black';
         });
 
-        const audioPlayer = document.getElementById('audioPlayer');
-        audioPlayer.style.background = 'white';
-        audioPlayer.style.color = 'black';
-
         modeToggle.innerText = 'Switch to Night Mode';
         modeToggle.style.background = '#cce8ff';
       }
     });
   </script>
+
 </body>
 </html>
