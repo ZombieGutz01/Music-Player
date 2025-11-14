@@ -81,6 +81,7 @@
     const audio = document.getElementById('audioPlayer');
     const items = document.querySelectorAll('#playlist li');
     const nowPlaying = document.getElementById('nowPlaying');
+    const modeToggle = document.getElementById('modeToggle');
 
     items.forEach(item => {
       item.addEventListener('click', () => {
@@ -91,23 +92,53 @@
       });
     });
 
-    const modeToggle = document.getElementById('modeToggle');
     let night = false;
 
     modeToggle.addEventListener('click', () => {
       night = !night;
+
       if (night) {
+        /* NIGHT MODE */
         document.body.style.background = '#1a1a1a';
-document.body.style.color = 'black';
-        document.querySelectorAll('.player').forEach(box => box.style.background = '#2b2b2b');
-document.querySelectorAll('li').forEach(b => b.style.background='#0d1b3a');
+        document.body.style.color = 'black';
+
+        document.querySelectorAll('.player').forEach(box => {
+          box.style.background = '#2b2b2b';
+          box.style.color = 'black';
+        });
+
+        document.querySelectorAll('li').forEach(b => {
+          b.style.background = '#0d1b3a'; /* dark blue */
+          b.style.color = 'black';
+        });
+
+        /* Audio control background */
+        const audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.style.background = '#2b2b2b';
+        audioPlayer.style.color = 'black';
+
         modeToggle.innerText = 'Switch to Day Mode';
         modeToggle.style.background = '#555';
+
       } else {
+        /* DAY MODE */
         document.body.style.background = '#d6f0ff';
         document.body.style.color = 'black';
-        document.querySelectorAll('.player').forEach(box => box.style.background = 'white');
-        document.querySelectorAll('li').forEach(b => b.style.background = '#cce8ff');
+
+        document.querySelectorAll('.player').forEach(box => {
+          box.style.background = 'white';
+          box.style.color = 'black';
+        });
+
+        document.querySelectorAll('li').forEach(b => {
+          b.style.background = '#cce8ff';
+          b.style.color = 'black';
+        });
+
+        const audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.style.background = 'white';
+        audioPlayer.style.color = 'black';
+
         modeToggle.innerText = 'Switch to Night Mode';
         modeToggle.style.background = '#cce8ff';
       }
