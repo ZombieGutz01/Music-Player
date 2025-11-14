@@ -15,7 +15,7 @@
       gap: 40px;
     }
 
-    /* MAIN PLAYER BOX (center) */
+    /* MAIN PLAYER BOX */
     .player {
       background: white;
       padding: 20px;
@@ -38,6 +38,7 @@
       list-style: none;
       padding: 0;
     }
+
     li {
       margin-bottom: 10px;
       cursor: pointer;
@@ -47,6 +48,7 @@
       color: black;
       transition: 0.2s;
     }
+
     li:hover {
       background: #b8dbff;
       box-shadow: 0 0 10px rgba(140, 190, 255, 0.8);
@@ -60,14 +62,14 @@
 
     /* NIGHT MODE AUDIO CONTROL FIXES */
     .night audio::-webkit-media-controls-panel {
-      background-color: #2b2b2b !important;
+      background-color: #1a274a !important;
     }
     .night audio::-webkit-media-controls-play-button {
-      background-color: #444 !important;
+      background-color: #0b1630 !important;
       border-radius: 50%;
     }
     .night audio::-webkit-media-controls-timeline {
-      background-color: #444 !important;
+      background-color: #0b1630 !important;
     }
 
     .credits {
@@ -91,12 +93,12 @@
     <h2>Music dump</h2>
     <p>Click a song to play it:</p>
 
-   <ul id="playlist">
-  <li data-src="love.mp3">Love – Bensound</li>
-  <li data-src="dreams.mp3">Dreams – Bensound</li>
-  <li data-src="anewbeginning.mp3">A New Beginning - Bensound</li>
-  <li data-src="beyondtheline.mp3">Beyond The Line - Bensound</li>
-</ul>
+    <ul id="playlist">
+      <li data-src="love.mp3">Love – Bensound</li>
+      <li data-src="dreams.mp3">Dreams – Bensound</li>
+      <li data-src="anewbeginning.mp3">A New Beginning - Bensound</li>
+      <li data-src="beyondtheline.mp3">Beyond The Line - Bensound</li>
+    </ul>
 
     <p id="nowPlaying" style="font-size:14px; color:#555; margin-top:10px; display:none;"></p>
     <audio id="audioPlayer" controls></audio>
@@ -135,22 +137,24 @@
       document.body.classList.toggle('night', night);
 
       if (night) {
-        document.body.style.background = '#1a1a1a';
+        /* 🌙 NIGHT MODE COLORS */
+        document.body.style.background = '#0d1b3a';
 
         document.querySelectorAll('.player, #violinBox').forEach(box => {
-          box.style.background = '#2b2b2b';
+          box.style.background = '#1a274a';  // lighter navy
           box.style.color = 'black';
         });
 
-        document.querySelectorAll('li').forEach(b => {
-          b.style.background = '#0d1b3a';
-          b.style.color = 'black';
+        document.querySelectorAll('li').forEach(button => {
+          button.style.background = '#0b1630';  // deep navy
+          button.style.color = 'black';
         });
 
         modeToggle.innerText = 'Switch to Day Mode';
-        modeToggle.style.background = '#555';
+        modeToggle.style.background = '#0b1630';  // match buttons
 
       } else {
+        /* 🌤 DAY MODE COLORS */
         document.body.style.background = '#d6f0ff';
 
         document.querySelectorAll('.player, #violinBox').forEach(box => {
@@ -158,9 +162,9 @@
           box.style.color = 'black';
         });
 
-        document.querySelectorAll('li').forEach(b => {
-          b.style.background = '#cce8ff';
-          b.style.color = 'black';
+        document.querySelectorAll('li').forEach(button => {
+          button.style.background = '#cce8ff';
+          button.style.color = 'black';
         });
 
         modeToggle.innerText = 'Switch to Night Mode';
