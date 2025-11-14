@@ -34,9 +34,26 @@
       box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     }
 
+    /* NEW SCROLL BOX FOR SONG LIST */
+    .scrollBox {
+      max-height: 300px;   /* <--- You can change this if you want! */
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    /* Hide ugly scrollbar on some browsers */
+    .scrollBox::-webkit-scrollbar {
+      width: 6px;
+    }
+    .scrollBox::-webkit-scrollbar-thumb {
+      background: #aac8ff;
+      border-radius: 10px;
+    }
+
     ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
 
     li {
@@ -93,24 +110,27 @@
     <h2>Music dump</h2>
     <p>Click a song to play it:</p>
 
-    <ul id="playlist">
-      <li data-src="love.mp3">Love – Bensound</li>
-      <li data-src="dreams.mp3">Dreams – Bensound</li>
-      <li data-src="anewbeginning.mp3">A New Beginning - Bensound</li>
-      <li data-src="beyondtheline.mp3">Beyond The Line - Bensound</li>
-      <li data-src="dawnofchange.mp3">Dawn Of Change - Bensound</li>
-      <li data-src="yesterday.mp3">Yesterday - Bensound</li>
-      <li data-src="echoofsadness.mp3">Echo Of Sadness - Bensound</li>
-      <li data-src="sleepless.mp3">Sleepless - Bensound</li>
-      <li data-src="melancholylull.mp3">Melancholy Lull - Bensound</li>
-      <li data-src="thelightbetweenus.mp3">The Light Between Us - Bensound</li>
-      <li data-src="motion.mp3">Motion - Bensound</li>
-      <li data-src="nothingon.mp3">Nothing On - Bensound</li>
-      <li data-src="laststop.mp3">Last Stop - Bensound</li>
-      <li data-src="asyourworldgrowssmaller.mp3">As Your World Grows Smaller - Bensound</li>
-      <li data-src="vanishinghope.mp3">Vanishing Hope - Bensound</li>
-      <li data-src="sunlitdepths.mp3">Sunlit Depths - Bensound</li>
-    </ul>
+    <!-- ⭐ NEW SCROLL BOX WRAPPER ⭐ -->
+    <div class="scrollBox">
+      <ul id="playlist">
+        <li data-src="love.mp3">Love – Bensound</li>
+        <li data-src="dreams.mp3">Dreams – Bensound</li>
+        <li data-src="anewbeginning.mp3">A New Beginning - Bensound</li>
+        <li data-src="beyondtheline.mp3">Beyond The Line - Bensound</li>
+        <li data-src="dawnofchange.mp3">Dawn Of Change - Bensound</li>
+        <li data-src="yesterday.mp3">Yesterday - Bensound</li>
+        <li data-src="echoofsadness.mp3">Echo Of Sadness - Bensound</li>
+        <li data-src="sleepless.mp3">Sleepless - Bensound</li>
+        <li data-src="melancholylull.mp3">Melancholy Lull - Bensound</li>
+        <li data-src="thelightbetweenus.mp3">The Light Between Us - Bensound</li>
+        <li data-src="motion.mp3">Motion - Bensound</li>
+        <li data-src="nothingon.mp3">Nothing On - Bensound</li>
+        <li data-src="laststop.mp3">Last Stop - Bensound</li>
+        <li data-src="asyourworldgrowssmaller.mp3">As Your World Grows Smaller - Bensound</li>
+        <li data-src="vanishinghope.mp3">Vanishing Hope - Bensound</li>
+        <li data-src="sunlitdepths.mp3">Sunlit Depths - Bensound</li>
+      </ul>
+    </div>
 
     <p id="nowPlaying" style="font-size:14px; color:#555; margin-top:10px; display:none;"></p>
     <audio id="audioPlayer" controls></audio>
@@ -129,10 +149,10 @@
 
   <script>
     const audio = document.getElementById('audioPlayer');
-    const items = document.querySelectorAll('#playlist li');
     const nowPlaying = document.getElementById('nowPlaying');
     const modeToggle = document.getElementById('modeToggle');
 
+    const items = document.querySelectorAll('#playlist li');
     items.forEach(item => {
       item.addEventListener('click', () => {
         audio.src = item.getAttribute('data-src');
@@ -149,24 +169,25 @@
       document.body.classList.toggle('night', night);
 
       if (night) {
-        /* 🌙 NIGHT MODE COLORS */
         document.body.style.background = '#0d1b3a';
 
         document.querySelectorAll('.player, #violinBox').forEach(box => {
-          box.style.background = '#1a274a';  // lighter navy
+          box.style.background = '#1a274a';
           box.style.color = 'black';
         });
 
         document.querySelectorAll('li').forEach(button => {
-          button.style.background = '#0b1630';  // deep navy
+          button.style.background = '#0b1630';
           button.style.color = 'black';
         });
 
+        /* dark scroll bar */
+        document.querySelector('.scrollBox').style.background = '#1a274a';
+
         modeToggle.innerText = 'Switch to Day Mode';
-        modeToggle.style.background = '#0b1630';  // match buttons
+        modeToggle.style.background = '#0b1630';
 
       } else {
-        /* 🌤 DAY MODE COLORS */
         document.body.style.background = '#d6f0ff';
 
         document.querySelectorAll('.player, #violinBox').forEach(box => {
@@ -178,6 +199,8 @@
           button.style.background = '#cce8ff';
           button.style.color = 'black';
         });
+
+        document.querySelector('.scrollBox').style.background = 'white';
 
         modeToggle.innerText = 'Switch to Night Mode';
         modeToggle.style.background = '#cce8ff';
