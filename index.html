@@ -6,7 +6,8 @@
   <style>
     body {
       font-family: sans-serif;
-      background: #d6f0ff;
+      background: #d6f0ff url("clouds.png") repeat; /* CLOUD BACKGROUND */
+      background-size: 600px; /* adjust size of clouds */
       padding: 20px;
       color: black;
       display: flex;
@@ -58,7 +59,7 @@
       border-radius: 8px;
     }
 
-    /* NIGHT MODE AUDIO CONTROL FIXES */
+    /* NIGHT MODE AUDIO FIXES */
     .night audio::-webkit-media-controls-panel {
       background-color: #2b2b2b !important;
     }
@@ -107,7 +108,7 @@
 
     <div class="credits">
       Music: <a href="https://www.bensound.com" target="_blank">Bensound.com</a>
-      - ALL violin covers are mine.
+      - ALL violin covers are made by me. I do NOT own the original songs.
     </div>
   </div>
 
@@ -133,6 +134,7 @@
       document.body.classList.toggle('night', night);
 
       if (night) {
+        /* NIGHT MODE */
         document.body.style.background = '#1a1a1a';
 
         document.querySelectorAll('.player, #violinBox').forEach(box => {
@@ -149,7 +151,9 @@
         modeToggle.style.background = '#555';
 
       } else {
-        document.body.style.background = '#d6f0ff';
+        /* DAY MODE */
+        document.body.style.background = '#d6f0ff url("clouds.png") repeat';
+        document.body.style.backgroundSize = "600px";
 
         document.querySelectorAll('.player, #violinBox').forEach(box => {
           box.style.background = 'white';
