@@ -34,7 +34,8 @@
       color: #000;
     }
     li:hover {
-      background: #dcdcdc;
+      background: #b8dbff; /* lighter blue */
+      box-shadow: 0 0 10px rgba(140, 190, 255, 0.8);
     }
     .credits {
       font-size: 12px;
@@ -52,11 +53,15 @@
       <li data-src="love.mp3">Love – Bensound</li>
       <li data-src="dreams.mp3">Dreams – Bensound</li>
     </ul>
+    <div class="player" id="violinBox" style="margin-top:20px;">
+      <h3>My Violin Covers</h3>
+      <ul id="violinList"></ul>
+    </div>
+    <p id="nowPlaying" style="font-size:14px; color:#555; margin-top:10px; display:none;"></p>
     <audio id="audioPlayer" controls></audio>
 
     <div class="credits">
       Music: <a href="https://www.bensound.com" target="_blank">Bensound.com</a>
-       - ALL violin covers are my own recordings. I do not own the original songs.
     </div>
   </div>
 
@@ -68,9 +73,39 @@
       item.addEventListener('click', () => {
         audio.src = item.getAttribute('data-src');
         audio.play();
+        document.getElementById('nowPlaying').innerText = "Now Playing: " + item.innerText;
+        document.getElementById('nowPlaying').style.display = 'block';
+      });
+    });
+
+    const modeToggle = document.getElementById('modeToggle');
+    let night = false;
+    modeToggle.addEventListener('click', () => {
+      night = !night;
+      if(night){
+        document.body.style.background = '#1a1a1a';
+        document.body.style.color = 'white';
+        document.querySelectorAll('.player').forEach(box => box.style.background = '#2b2b2b');
+        modeToggle.innerText = 'Switch to Day Mode';
+        modeToggle.style.background = '#555';
+        document.querySelectorAll('li').forEach(b => b.style.background='#3b3b3b');
+      } else {
+        document.body.style.background = '#d6f0ff';
+        document.body.style.color = 'black';
+        document.querySelectorAll('.player').forEach(box => box.style.background = 'white');
+        modeToggle.innerText = 'Switch to Night Mode';
+        modeToggle.style.background = '#cce8ff';
+        document.querySelectorAll('li').forEach(b => b.style.background='#cce8ff');
+      }
+    });(item => {
+      item.addEventListener('click', () => {
+        audio.src = item.getAttribute('data-src');
+        audio.play();
       });
     });
   </script>
+<div style="text-align:center; margin-top:20px;">
+    <button id="modeToggle" style="padding:8px 14px; border:none; border-radius:8px; background:#cce8ff; cursor:pointer;">Switch to Night Mode</button>
+  </div>
 </body>
 </html>
-
