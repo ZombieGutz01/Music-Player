@@ -150,66 +150,94 @@
     </div>
   </div>
 
-  <script>
-    const audio = document.getElementById('audioPlayer');
-    const nowPlaying = document.getElementById('nowPlaying');
-    const modeToggle = document.getElementById('modeToggle');
+<script>
+  const audio = document.getElementById('audioPlayer');
+  const nowPlaying = document.getElementById('nowPlaying');
+  const modeToggle = document.getElementById('modeToggle');
 
-    const items = document.querySelectorAll('#playlist li');
-    items.forEach(item => {
-      item.addEventListener('click', () => {
-        audio.src = item.getAttribute('data-src');
-        audio.play();
-        nowPlaying.innerText = "Now Playing: " + item.innerText;
-        nowPlaying.style.display = 'block';
+  /* Get BOTH lists */
+  const mainSongs = document.querySelectorAll('#playlist li');
+  const violinSongs = document.querySelectorAll('#violinList li');
+
+  /* Combine them into one big playlist */
+  const allSongs = [...mainSongs, ...violinSongs];
+
+  /* Add click listeners to ALL songs */
+  allSongs.forEach((item, index) => {
+    item.dataset.index = index; // save index for autoplay
+
+    item.addEventListener('click', () => {
+      playSong(index);
+    });
+  });
+
+  /* 🎵 PLAY A SONG BY INDEX */
+  function playSong(i) {
+    const item = allSongs[i];
+    const src = item.getAttribute('data-src');
+
+    audio.src = src;
+    audio.play();
+
+    nowPlaying.innerText = "Now Playing: " + item.innerText;
+    nowPlaying.style.display = 'block';
+
+    audio.dataset.currentIndex = i;
+  }
+
+  /* 🎶 AUTO-PLAY NEXT SONG */
+  audio.onended = () => {
+    let i = Number(audio.dataset.currentIndex);
+    let next = i + 1;
+
+    if (next < allSongs.length) {
+      playSong(next);
+    }
+  };
+
+  /* 🌙 NIGHT MODE */
+  let night = false;
+  modeToggle.addEventListener('click', () => {
+    night = !night;
+    document.body.classList.toggle('night', night);
+
+    if (night) {
+      document.body.style.background = '#0d1b3a';
+
+      document.querySelectorAll('.player, #violinBox').forEach(box => {
+        box.style.background = '#1a274a';
+        box.style.color = 'black';
       });
-    });
 
-    let night = false;
+      document.querySelectorAll('li').forEach(button => {
+        button.style.background = '#0b1630';
+        button.style.color = 'black';
+      });
 
-    modeToggle.addEventListener('click', () => {
-      night = !night;
-      document.body.classList.toggle('night', night);
+      document.querySelector('.scrollBox').style.background = '#1a274a';
 
-      if (night) {
-        document.body.style.background = '#0d1b3a';
+      modeToggle.innerText = 'Switch to Day Mode';
+      modeToggle.style.background = '#0b1630';
+    } else {
+      document.body.style.background = '#d6f0ff';
 
-        document.querySelectorAll('.player, #violinBox').forEach(box => {
-          box.style.background = '#1a274a';
-          box.style.color = 'black';
-        });
+      document.querySelectorAll('.player, #violinBox').forEach(box => {
+        box.style.background = 'white';
+        box.style.color = 'black';
+      });
 
-        document.querySelectorAll('li').forEach(button => {
-          button.style.background = '#0b1630';
-          button.style.color = 'black';
-        });
+      document.querySelectorAll('li').forEach(button => {
+        button.style.background = '#cce8ff';
+        button.style.color = 'black';
+      });
 
-        /* dark scroll bar */
-        document.querySelector('.scrollBox').style.background = '#1a274a';
+      document.querySelector('.scrollBox').style.background = 'white';
 
-        modeToggle.innerText = 'Switch to Day Mode';
-        modeToggle.style.background = '#0b1630';
-
-      } else {
-        document.body.style.background = '#d6f0ff';
-
-        document.querySelectorAll('.player, #violinBox').forEach(box => {
-          box.style.background = 'white';
-          box.style.color = 'black';
-        });
-
-        document.querySelectorAll('li').forEach(button => {
-          button.style.background = '#cce8ff';
-          button.style.color = 'black';
-        });
-
-        document.querySelector('.scrollBox').style.background = 'white';
-
-        modeToggle.innerText = 'Switch to Night Mode';
-        modeToggle.style.background = '#cce8ff';
-      }
-    });
-  </script>
+      modeToggle.innerText = 'Switch to Night Mode';
+      modeToggle.style.background = '#cce8ff';
+    }
+  });
+</script>
 
 </body>
 </html>
