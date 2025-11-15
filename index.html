@@ -151,84 +151,103 @@
   </div>
 
   <script>
-    const audio = document.getElementById('audioPlayer');
-    const nowPlaying = document.getElementById('nowPlaying');
-    const modeToggle = document.getElementById('modeToggle');
+  const audio = document.getElementById('audioPlayer');
+  const nowPlaying = document.getElementById('nowPlaying');
+  const modeToggle = document.getElementById('modeToggle');
 
-    /* Merge both song lists */
-    const playlistItems = [
-      ...document.querySelectorAll('#playlist li'),
-      ...document.querySelectorAll('#violinList li')
-    ];
+  const bensoundItems = [...document.querySelectorAll('#playlist li')];
+  const violinItems = [...document.querySelectorAll('#violinList li')];
 
-    let currentIndex = -1;
+  let currentIndex = -1;
+  let currentList = null; // "bensound" or "violin"
 
-    function playSong(index) {
-      const item = playlistItems[index];
-      if (!item) return;
+  function playSong(list, index) {
+    const items = list === "bensound" ? bensoundItems : violinItems;
+    const item = items[index];
+    if (!item) return;
 
-      currentIndex = index;
-      audio.src = item.getAttribute('data-src');
-      audio.play();
+    currentList = list;
+    currentIndex = index;
 
-      nowPlaying.innerText = "Now Playing: " + item.innerText;
-      nowPlaying.style.display = 'block';
+    audio.src = item.getAttribute('data-src');
+    audio.play();
+
+    nowPlaying.innerText = "Now Playing: " + item.innerText;
+    nowPlaying.style.display = 'block';
+  }
+
+  /* Click behavior for Bensound songs */
+  bensoundItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      playSong("bensound", index);
+    });
+  });
+
+  /* Click behavior for violin songs */
+  violinItems.forEach((item, index) => {
+    item.addEventListener('click', () => {
+      playSong("violin", index);
+    });
+  });
+
+  /* Auto-play next inside correct list */
+  audio.addEventListener('ended', () => {
+    if (!currentList) return;
+
+    const items = currentList === "bensound" ? bensoundItems : violinItems;
+
+    const nextIndex = currentIndex + 1;
+
+    if (nextIndex < items.length) {
+      playSong(currentList, nextIndex);
+    } else {
+      // Loop back to the first song in the same list
+      playSong(currentList, 0);
     }
+  });
 
-    /* Make songs clickable */
-    playlistItems.forEach((item, index) => {
-      item.addEventListener('click', () => playSong(index));
-    });
+  /* NIGHT MODE */
+  let night = false;
 
-    /* Auto-play next song */
-    audio.addEventListener('ended', () => {
-      if (currentIndex + 1 < playlistItems.length) {
-        playSong(currentIndex + 1);
-      }
-    });
+  modeToggle.addEventListener('click', () => {
+    night = !night;
+    document.body.classList.toggle('night', night);
 
-    /* NIGHT MODE */
-    let night = false;
+    if (night) {
+      document.body.style.background = '#0d1b3a';
 
-    modeToggle.addEventListener('click', () => {
-      night = !night;
-      document.body.classList.toggle('night', night);
+      document.querySelectorAll('.player, #violinBox').forEach(box => {
+        box.style.background = '#1a274a';
+        box.style.color = 'black';
+      });
 
-      if (night) {
-        document.body.style.background = '#0d1b3a';
+      document.querySelectorAll('li').forEach(button => {
+        button.style.background = '#0b1630';
+        button.style.color = 'black';
+      });
 
-        document.querySelectorAll('.player, #violinBox').forEach(box => {
-          box.style.background = '#1a274a';
-          box.style.color = 'black';
-        });
+      document.querySelector('.scrollBox').style.background = '#1a274a';
+      modeToggle.innerText = 'Switch to Day Mode';
+      modeToggle.style.background = '#0b1630';
 
-        document.querySelectorAll('li').forEach(button => {
-          button.style.background = '#0b1630';
-          button.style.color = 'black';
-        });
+    } else {
+      document.body.style.background = '#d6f0ff';
 
-        document.querySelector('.scrollBox').style.background = '#1a274a';
-        modeToggle.innerText = 'Switch to Day Mode';
-        modeToggle.style.background = '#0b1630';
+      document.querySelectorAll('.player, #violinBox').forEach(box => {
+        box.style.background = 'white';
+        box.style.color = 'black';
+      });
 
-      } else {
-        document.body.style.background = '#d6f0ff';
+      document.querySelectorAll('li').forEach(button => {
+        button.style.background = '#cce8ff';
+        button.style.color = 'black';
+      });
 
-        document.querySelectorAll('.player, #violinBox').forEach(box => {
-          box.style.background = 'white';
-          box.style.color = 'black';
-        });
-
-        document.querySelectorAll('li').forEach(button => {
-          button.style.background = '#cce8ff';
-          button.style.color = 'black';
-        });
-
-        document.querySelector('.scrollBox').style.background = 'white';
-        modeToggle.innerText = 'Switch to Night Mode';
-        modeToggle.style.background = '#cce8ff';
-      }
-    });
+      document.querySelector('.scrollBox').style.background = 'white';
+      modeToggle.innerText = 'Switch to Night Mode';
+      modeToggle.style.background = '#cce8ff';
+    }
+  });
   </script>
 
 </body>
